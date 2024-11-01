@@ -1,45 +1,51 @@
-import numpy as np
+import math
 
 class MarginPerceptron:
-    def __init__(self, d, eta=0.1, gamma=1.0):
-        """
-        初始化 Margin Perceptron 参数
-        :param d: 特征空间的维度
-        :param eta: 学习率
-        :param gamma: margin 参数
-        """
-        self.w = np.zeros(d)  # 权重向量初始化为零向量
-        self.b = 0.0          # 偏置初始化为 0
-        self.eta = eta        # 学习率
-        self.gamma = gamma    # margin 参数
+    def __init__(self, d: int, eta: float = 0.1, gamma: float = 1.0):
 
-    def train(self, X, y, max_iter=1000):
+        self.w = [0.0] * d  # Initialize weight vector to zero vector
+        self.b = 0.0        # Initialize bias to 0
+        self.eta = eta      # Learning rate
+        self.gamma = gamma  # Margin parameter
+
+    def dot_product(self, v1: list, v2: list) -> float:
+        return sum(x * y for x, y in zip(v1, v2))
+
+    def vector_add(self, v1: list, v2: list, scalar: float = 1.0) -> list:
+        return [x + scalar * y for x, y in zip(v1, v2)]
+
+    def norm(self, v: list) -> float:
+        return math.sqrt(sum(x * x for x in v))
+
+    def train(self, X: list, y: list, max_iter: int = 1000):
         """
-        训练 Margin Perceptron 模型
-        :param X: 输入特征矩阵，shape 为 (n_samples, d)
-        :param y: 标签数组，shape 为 (n_samples,)
-        :param max_iter: 最大迭代次数
+        Train the Margin Perceptron model
+        :param X: Input feature matrix (list of lists)
+        :param y: Label list
+        :param max_iter: Maximum number of iterations
         """
         for _ in range(max_iter):
+            all_points_correct = True
             for xi, yi in zip(X, y):
-                # 计算得分
-                score = yi * (np.dot(self.w, xi) + self.b)
+                score = yi * (self.dot_product(self.w, xi) + self.b)
                 if score < self.gamma:
-                    # 更新权重和偏置
-                    self.w += self.eta * yi * xi
+                    self.w = self.vector_add(self.w, xi, scalar=self.eta * yi)
                     self.b += self.eta * yi
+                    all_points_correct = False
+            if all_points_correct:
+                break  # Stop training when all points satisfy the condition
 
-    def predict(self, X):
+    def predict(self, X: list) -> list:
         """
-        使用模型进行预测
-        :param X: 输入特征矩阵
-        :return: 预测标签数组
+        Make predictions using the model
+        :param X: Input feature matrix (list of lists)
+        :return: List of predicted labels
         """
-        return np.sign(np.dot(X, self.w) + self.b)
+        return [1 if self.dot_product(self.w, xi) + self.b >= 0 else -1 for xi in X]
 
-    def calculate_margin(self):
+    def calculate_margin(self) -> float:
         """
-        计算当前模型的 margin
-        :return: margin 值
+        Calculate the current margin of the model
+        :return: Margin value
         """
-        return self.gamma / np.linalg.norm(self.w)
+        return self.gamma / self.norm(self.w) if self.norm(self.w) != 0 else float('inf')
