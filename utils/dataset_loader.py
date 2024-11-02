@@ -1,11 +1,12 @@
 # dataset_loader.py
+from typing import Union
 
 def read_file(file_path: str) -> list[str]:
     with open(file_path, 'r') as file:
         lines = file.readlines()
     return lines
 
-def parse_dataset(lines: list[str]):
+def parse_dataset(lines: list[str]) -> Union[int, int, float, list[list[float], int]]:
     # Read the first line
     first_line = lines[0]
     num_points, instance_dim, r = map(int, first_line.split(','))

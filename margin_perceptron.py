@@ -1,10 +1,12 @@
 import math
+from utils.argparser import argparser
+from utils.dataset_loader import *
 
 class MarginPerceptron:
     def __init__(self, d: int, eta: float = 0.1, gamma: float = 1.0):
-
-        self.w = [0.0] * d  # Initialize weight vector to zero vector
-        self.b = 0.0        # Initialize bias to 0
+        # y = w * x + b
+        self.w = [0.0] * d  # Initialize weight vector -> 0 vector
+        self.b = 0.0        # Initialize bias = 0
         self.eta = eta      # Learning rate
         self.gamma = gamma  # Margin parameter
 
@@ -49,3 +51,19 @@ class MarginPerceptron:
         :return: Margin value
         """
         return self.gamma / self.norm(self.w) if self.norm(self.w) != 0 else float('inf')
+
+
+
+
+if __name__ == '__main__':
+
+    dataset_path = argparser()
+    print(f"Dataset Path: {dataset_path}")
+
+    lines = read_file(file_path)
+    num_points, instance_dim, r, data_points = parse_dataset(lines)
+
+    print(f"n: {num_points}, d: {instance_dim}, r: {r}")
+    print("Data points:")
+    for point in data_points:
+        print(point)
