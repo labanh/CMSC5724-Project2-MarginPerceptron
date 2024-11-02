@@ -1,21 +1,3 @@
-Dataset Path: datasets/4d-r24-n10000.txt
-Number of Points: 10000 
-Dimension of Instance Space: 4 
-Radius: 24
-
-Iteration 1:
-
-	✖Violation Point Found: [0.3577774695649616, -13.28906877856895, 17.471284038798785, -5.7763595605752], Label: -1, Distance: 0.0000
-		 Updated: w=[-0.3577774695649616, 13.28906877856895, -17.471284038798785, 5.7763595605752], b=0.0000, Distance: 0.0000
-
-	✖Violation Point Found: [6.82355083519974, -9.665045471597114, -5.817655880458526, 1.7627778456337602], Label: 1, Distance: -19.0564
-		 Updated: w=[6.465773365634778, 3.6240233069718357, -23.28893991925731, 7.53913740620896], b=0.0000, Distance: -19.0564
-
-	✖Violation Point Found: [2.7942734409822556, 14.163652095528104, -4.715202190924453, -15.69892093754455], Label: -1, Distance: 60.8523
-		 Updated: w=[3.6714999246525224, -10.539628788556268, -18.57373772833286, 23.238058343753508], b=0.0000, Distance: 60.8523
-
-Iteration 2:
-
-	✔ No violation points found, training finished.
-
-Final Margin: 0.0315
+version https://git-lfs.github.com/spec/v1
+oid sha256:de7c00def97c24c37f63003ea343fd8db3c46430ede95ac5ac3375283fea07c6
+size 991
