@@ -66,7 +66,7 @@ if __name__ == '__main__':
     logging.info(f"Number of Points: {num_points} \nDimension of Instance Space: {instance_dim} \nRadius: {r}\n")
 
     # 定义 gamma 的候选值范围
-    gamma_values = [5000.0, 100.0, 300.0, 1000.0, 10000.0]
+    gamma_values = [0.1, 1.0, 10.0, 100.0, 300.0, 1000.0]
     best_gamma = None
     best_margin = -1
 
