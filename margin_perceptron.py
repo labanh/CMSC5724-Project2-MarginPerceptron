@@ -24,26 +24,30 @@ class MarginPerceptron:
 
     def train(self, X, y, max_iter=1000):
         for iteration in range(max_iter):
-            all_points_correct = True
             logging.info(f"Iteration {iteration + 1}:\n")
+            violation_found = False
+
             for xi, yi in zip(X, y):
-                score = yi * (self.dot_product(self.w, xi) + self.b)
-                logging.info(f"\tCurrent Point: {xi}, Label: {yi}, Score: {score:.4f}")
-                if score < self.gamma:
-                    self.w = self.vector_add(self.w, xi, scalar=self.eta * yi)
-                    self.b += self.eta * yi
-                    all_points_correct = False
+                # 计算到分离平面的距离
+                distance = self.dot_product(self.w, xi) + self.b
+                
+                # 判断是否存在违规点
+                if abs(distance) < self.gamma / 2 or (yi == 1 and distance < 0) or (yi == -1 and distance > 0):
+                    violation_found = True
+                    logging.info(f"\t\u2716Violation Point Found: {xi}, Label: {yi}, Distance: {distance:.4f}")
+
+                    # 调整权重
+                    if yi == 1:
+                        self.w = self.vector_add(self.w, xi)  # w += p
+                    else:
+                        self.w = self.vector_add(self.w, xi, scalar=-1)  # w -= p
+
                     # 输出当前的权重和偏置
-                    logging.info(f"\t\t Updated: w={self.w}, b={self.b:.4f}, score={score:.4f}\n")
-                else:
-                    logging.info(f"\t\t No update: w={self.w}, b={self.b:.4f}, score={score:.4f}\n")
-            if all_points_correct:
-                logging.info("All points classified correctly.\n")
-                break  # 当所有点都满足条件时，停止训练
+                    logging.info(f"\t\t Updated: w={self.w}, b={self.b:.4f}, Distance: {distance:.4f}\n")
 
-
-    def predict(self, X: list) -> list:
-        return [1 if self.dot_product(self.w, xi) + self.b >= 0 else -1 for xi in X]
+            if not violation_found:
+                logging.info("\t\u2714 No violation points found, training finished.\n")
+                break  # 结束训练，如果没有违规点
 
     # 计算当前的margin
     def calculate_margin(self) -> float:
@@ -61,7 +65,7 @@ if __name__ == '__main__':
     logging.info(f"Dataset Path: {dataset_path}")
 
     lines = read_file(dataset_path)
-    num_points, instance_dim, r, data_points = parse_dataset(lines)
+    instance_dim, num_points, r, data_points = parse_dataset(lines)
 
     logging.info(f"Number of Points: {num_points} \nDimension of Instance Space: {instance_dim} \nRadius: {r}\n")
     perceptron = MarginPerceptron(instance_dim, eta=0.1, gamma=1.0)
