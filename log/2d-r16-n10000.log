@@ -1,4 +1,3 @@
-Logging to log/2d-r16-n10000.log
 Dataset Path: datasets/2d-r16-n10000.txt
 n: 2, d: 10000, r: 16
 > Iteration 1:
@@ -40004,3 +40003,4 @@ n: 2, d: 10000, r: 16
 > > Current Point: [8.213627751406463, -12.428518952298017], Label: 1, Score: 32.1233
 	 No update: w=[0.21777800307737005, -2.456813827071316], b=-0.2000, score=32.1233
 All points classified correctly.
+Final Margin: 0.4054

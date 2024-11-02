@@ -10,6 +10,8 @@ python margin_perceptron.py --dataset 4d-r24-n10000.txt
 python margin_perceptron.py --dataset 8d-r12-n10000.txt
 ```
 
+After running the code, logs will be stored at `./log` folder.
+
 # Dataset
 Your implementation should work on any dataset in the following format:
 The first line contains three numbers n, d, and r, where n is the number of points, d is the dimensionality of the instance space, and r is the radius.

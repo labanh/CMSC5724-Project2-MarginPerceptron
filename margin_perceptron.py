@@ -1,6 +1,7 @@
 import math
-import logging
 import os
+import logging
+from utils.logger import setup_logging
 from utils.argparser import argparser
 from utils.dataset_loader import *
 
@@ -57,26 +58,6 @@ class MarginPerceptron:
         return self.gamma / self.norm(self.w) if self.norm(self.w) != 0 else float('inf')
 
 
-def setup_logging(dataset_name):
-    log_dir = 'log'
-    if not os.path.exists(log_dir):
-        os.makedirs(log_dir)
-    
-    log_filename = f"{dataset_name}.log"
-    log_filepath = os.path.join(log_dir, log_filename)
-
-    logging.basicConfig(
-        level=logging.INFO,
-        format='%(message)s',
-        handlers=[
-            logging.FileHandler(log_filepath, mode='w'),
-            logging.StreamHandler()
-        ]
-    )
-    print(f"Logging to {log_filepath}")
-
-    
-
 if __name__ == '__main__':
 
     dataset_path = argparser()
@@ -99,3 +80,5 @@ if __name__ == '__main__':
         y.append(point[1])
 
     perceptron.train(x, y)
+    margin = perceptron.calculate_margin()
+    logging.info(f"Final Margin: {margin:.4f}")
