@@ -6,11 +6,10 @@ from utils.argparser import argparser
 from utils.dataset_loader import read_file, parse_dataset
 
 class MarginPerceptron:
-    def __init__(self, d: int, eta: float = 0.1, gamma: float = 100.0):
+    def __init__(self, d: int, gamma: float = 100.0):
         # y = w * x + b
         self.w = [0.0] * d  # Initialize weight vector -> 0 vector
         self.b = 0.0        # Initialize bias = 0
-        self.eta = eta      # Learning rate
         self.gamma = gamma  # Margin parameter
 
     def dot_product(self, v1: list, v2: list) -> float:
@@ -23,6 +22,8 @@ class MarginPerceptron:
         return math.sqrt(sum(x * x for x in v))
 
     def train(self, X, y, max_iter=1000):
+        R_max = self.find_max_distance_to_origin(X)
+        
         for iteration in range(max_iter):
             logging.info(f"Iteration {iteration + 1}:\n")
             violation_found = False
@@ -31,7 +32,7 @@ class MarginPerceptron:
                 # 计算到分离平面的距离 d = w * x + b
                 distance = self.dot_product(self.w, xi) + self.b
                 
-                # 判断是否存在违规点
+                # 判断是否存在违规点: 距离 + 分类错误
                 if abs(distance) < self.gamma / 2 or (yi == 1 and distance < 0) or (yi == -1 and distance > 0):
                     violation_found = True
                     logging.info(f"\t\u2716Violation Point Found: {xi}, Label: {yi}, Distance: {distance:.4f}")
@@ -48,10 +49,23 @@ class MarginPerceptron:
             if not violation_found:
                 logging.info("\t\u2714 No violation points found, training finished.\n")
                 break  # 结束训练，如果没有违规点
+    
+    def find_max_distance_to_origin(self, X) -> float:
+        max_distance = 0
+        for xi in X:
+            # 计算 xi 到原点的欧几里得距离
+            distance = sum(x ** 2 for x in xi) ** 0.5
+            if distance > max_distance:
+                max_distance = distance
+        return max_distance
 
-    # 计算当前的margin
-    def calculate_margin(self) -> float:
-        return self.gamma / self.norm(self.w) if self.norm(self.w) != 0 else float('inf')
+    # 计算最小的 margin: gamma = min{ |wx + b|/||w| }       
+    def calculate_margin(self, X, y) -> float:
+        if self.norm(self.w) == 0:
+            return float('inf')
+        margins = [abs(self.dot_product(self.w, xi) + self.b) / self.norm(self.w) for xi in X]
+        return min(margins)
+
 
 
 if __name__ == '__main__':
@@ -64,25 +78,26 @@ if __name__ == '__main__':
     
     logging.info(f"Dataset Path: {dataset_path}")
 
+    # Load Dataset
     lines = read_file(dataset_path)
     instance_dim, num_points, r, data_points = parse_dataset(lines)
 
     logging.info(f"Number of Points: {num_points} \nDimension of Instance Space: {instance_dim} \nRadius: {r}\n")
 
     # 定义 gamma 的候选值范围
-    gamma_values = [0.1, 1.0, 10.0, 100.0, 300.0, 1000.0]
+    gamma_values = [0.1, 1.0, 10.0, 100.0, 1900.0, 2000.0, 2100.0, 2200.0, 2300.0]
     best_gamma = None
     best_margin = -1
 
     for gamma in gamma_values:
-        perceptron = MarginPerceptron(instance_dim, eta=0.1, gamma=gamma)
+        perceptron = MarginPerceptron(instance_dim, gamma=gamma)
         x, y = [], []
         for point in data_points:
             x.append(point[0])
             y.append(point[1])
 
         perceptron.train(x, y)
-        margin = perceptron.calculate_margin()
+        margin = perceptron.calculate_margin(x, y)
         logging.info(f"Gamma: {gamma}, Margin: {margin:.4f}")
 
         if margin > best_margin:
@@ -90,14 +105,3 @@ if __name__ == '__main__':
             best_gamma = gamma
 
     logging.info(f"Optimal Gamma: {best_gamma}, Optimal Margin: {best_margin:.4f}")
-
-    # perceptron = MarginPerceptron(instance_dim, eta=0.1, gamma=1.0)
-
-    # x, y = [], []
-    # for point in data_points:
-    #     x.append(point[0])
-    #     y.append(point[1])
-
-    # perceptron.train(x, y)
-    # margin = perceptron.calculate_margin()
-    # logging.info(f"Final Margin: {margin:.4f}")
