@@ -64,13 +64,36 @@ if __name__ == '__main__':
     num_points, instance_dim, r, data_points = parse_dataset(lines)
 
     logging.info(f"Number of Points: {num_points} \nDimension of Instance Space: {instance_dim} \nRadius: {r}\n")
-    perceptron = MarginPerceptron(instance_dim, eta=0.1, gamma=1.0)
 
-    x, y = [], []
-    for point in data_points:
-        x.append(point[0])
-        y.append(point[1])
+    # 定义 gamma 的候选值范围
+    gamma_values = [5000.0, 100.0, 300.0, 1000.0, 10000.0]
+    best_gamma = None
+    best_margin = -1
 
-    perceptron.train(x, y)
-    margin = perceptron.calculate_margin()
-    logging.info(f"Final Margin: {margin:.4f}")
+    for gamma in gamma_values:
+        perceptron = MarginPerceptron(instance_dim, eta=0.1, gamma=gamma)
+        x, y = [], []
+        for point in data_points:
+            x.append(point[0])
+            y.append(point[1])
+
+        perceptron.train(x, y)
+        margin = perceptron.calculate_margin()
+        logging.info(f"Gamma: {gamma}, Margin: {margin:.4f}")
+
+        if margin > best_margin:
+            best_margin = margin
+            best_gamma = gamma
+
+    logging.info(f"Optimal Gamma: {best_gamma}, Optimal Margin: {best_margin:.4f}")
+
+    # perceptron = MarginPerceptron(instance_dim, eta=0.1, gamma=1.0)
+
+    # x, y = [], []
+    # for point in data_points:
+    #     x.append(point[0])
+    #     y.append(point[1])
+
+    # perceptron.train(x, y)
+    # margin = perceptron.calculate_margin()
+    # logging.info(f"Final Margin: {margin:.4f}")
