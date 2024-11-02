@@ -3,10 +3,10 @@ import os
 import logging
 from utils.logger import setup_logging
 from utils.argparser import argparser
-from utils.dataset_loader import *
+from utils.dataset_loader import read_file, parse_dataset
 
 class MarginPerceptron:
-    def __init__(self, d: int, eta: float = 0.1, gamma: float = 10.0):
+    def __init__(self, d: int, eta: float = 0.1, gamma: float = 100.0):
         # y = w * x + b
         self.w = [0.0] * d  # Initialize weight vector -> 0 vector
         self.b = 0.0        # Initialize bias = 0
@@ -28,7 +28,7 @@ class MarginPerceptron:
             violation_found = False
 
             for xi, yi in zip(X, y):
-                # 计算到分离平面的距离
+                # 计算到分离平面的距离 d = w * x + b
                 distance = self.dot_product(self.w, xi) + self.b
                 
                 # 判断是否存在违规点
