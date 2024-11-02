@@ -2,7 +2,13 @@
 CUHK CMSC 5724 Project #2: Margin Perceptron
 
 # Usage
+```bash
+python margin_perceptron.py --dataset 2d-r16-n10000.txt
 
+python margin_perceptron.py --dataset 4d-r24-n10000.txt
+
+python margin_perceptron.py --dataset 8d-r12-n10000.txt
+```
 
 # Dataset
 Your implementation should work on any dataset in the following format:
