@@ -12,6 +12,9 @@ python margin_perceptron.py --dataset 8d-r12-n10000.txt
 
 After running the code, logs will be stored at `./log` folder.
 
+For 2D data, a sample picture of the dataset points and the classifier is below:
+![2D Points and Decision Boundary](2d_points_and_decision_boundary.png)
+
 # Project Structure
 ```
 ├── README.md
