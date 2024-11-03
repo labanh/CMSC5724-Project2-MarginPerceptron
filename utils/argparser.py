@@ -3,16 +3,16 @@ import argparse
 def argparser():
     parser = argparse.ArgumentParser(description="Margin Perceptron Argument Parser")
     
-    # 添加 --dataset 参数
+    # Add --dataset argument
     parser.add_argument('--dataset', type=str, required=True, 
                         help='Dataset (e.g.,"2d-r16-n10000.txt")')
     
-    path_perfix = "datasets/"
+    path_prefix = "datasets/"
 
     args = parser.parse_args()
     
-    # 拼接完整的 dataset 路径
-    dataset_path = path_perfix + args.dataset
+    # Concatenate the full dataset path
+    dataset_path = path_prefix + args.dataset
     return dataset_path
 
 if __name__ == "__main__":

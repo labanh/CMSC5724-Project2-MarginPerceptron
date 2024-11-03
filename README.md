@@ -12,6 +12,26 @@ python margin_perceptron.py --dataset 8d-r12-n10000.txt
 
 After running the code, logs will be stored at `./log` folder.
 
+# Project Structure
+```
+├── README.md
+├>> margin_perceptron.py
+├── 2d_points_and_decision_boundary.png
+├── datasets
+│   ├── 2d-r16-n10000.txt
+│   ├── 4d-r24-n10000.txt
+│   └── 8d-r12-n10000.txt
+├── log
+│   ├── 2d-r16-n10000.log
+│   ├── 4d-r24-n10000.log
+│   └── 8d-r12-n10000.log
+└── utils
+    ├── argparser.py
+    ├── dataset_loader.py
+    ├── logger.py
+    └── visualize_2d.py
+```
+
 # Dataset
 Your implementation should work on any dataset in the following format:
 The first line contains three numbers n, d, and r, where n is the number of points, d is the dimensionality of the instance space, and r is the radius.
@@ -28,3 +48,5 @@ An executable program. \
 A readme file detailing how to use the program. \
 Source code. \
 A report explaining the margin of your classifier for each of the three datasets.
+
+

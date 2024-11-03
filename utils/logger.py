@@ -1,6 +1,7 @@
 import os
 import logging
 
+# set up logger for the main coe
 def setup_logging(dataset_name):
     log_dir = 'log'
     if not os.path.exists(log_dir):
