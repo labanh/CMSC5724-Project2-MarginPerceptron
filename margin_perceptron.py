@@ -29,7 +29,7 @@ class MarginPerceptron:
         terminate_iter = self.terminate_iter()
         logging.info(f"Terminate Iteration: {terminate_iter}\n")
 
-        for iteration in range(terminate_iter):
+        for iteration in range(10000):
             logging.info(f"Iteration {iteration + 1}:\n")
             violation_found = False
 
@@ -62,7 +62,7 @@ class MarginPerceptron:
             if iteration == terminate_iter - 1:
                 logging.info("\t\u26A0 Training reached maximum iterations.\n")
                 self.gamma_guess /= 2
-                logging.info(f"\t\t Updated: γ_guess={self.gamma_guess:.4f}\n")
+                logging.info(f"\t\t Updated: gamma_guess={self.gamma_guess:.4f}\n")
                 iteration = 0  # 重新开始训练
     
     # 计算数据点到原点的最大距离，等于数据中给出的 R
