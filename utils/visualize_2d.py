@@ -21,7 +21,7 @@ def plot_2d_points_and_decision_boundary(X: list[list[float]], y: list[int], w: 
     plt.xlabel('X1')
     plt.ylabel('X2')
     plt.title('2D Points and Decision Boundary')
-    plt.legend()
+    plt.legend("upper right")
     plt.grid(True)
     # Save the image to the specified path
     plt.savefig('2d_points_and_decision_boundary.png')
