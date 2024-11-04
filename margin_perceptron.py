@@ -114,4 +114,4 @@ if __name__ == '__main__':
     b = perceptron.return_b()
     logging.info(f"w: {w}, b: {b:.4f}\n")
 
-    plot_2d_points_and_decision_boundary(X, y, w, b)
+    # plot_2d_points_and_decision_boundary(X, y, w, b)
