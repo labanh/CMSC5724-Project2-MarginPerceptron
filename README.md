@@ -34,7 +34,31 @@ For 2D data, a sample picture of the dataset points and the classifier is below:
     ├── logger.py
     └── visualize_2d.py
 ```
+# Key Components
+## Imports and Setup:
 
+Imports necessary libraries and utility functions for logging, argument parsing, dataset loading, and visualization.
+
+## MarginPerceptron Class:
+
+### Initialization:
+* Initializes the weight vector w, bias b, learning rate eta, and maximum distance to origin R_max.
+* Sets an initial guess for the margin gamma_guess.
+### Methods:
+* dot_product: Calculates the dot product of two vectors.
+* vector_add: Adds two vectors, optionally scaling the second vector by a scalar.
+* norm: Calculates the Euclidean norm of a vector.
+* train: Trains the perceptron using the provided dataset. Adjusts weights and bias based on violation points and logs the updates.
+* terminate_iter: Calculates the termination condition based on the margin guess.
+* calculate_margin: Computes the minimum margin of the classifier.
+* return_w and return_b: Return the current weight vector and bias, respectively.
+## Main Execution:
+
+* Parses command-line arguments to get the dataset path.
+* Sets up logging with a filename based on the dataset.
+* Loads and parses the dataset.
+* Initializes and trains the Margin Perceptron model.
+* Logs the final margin, weights, and bias.
 # Dataset
 Your implementation should work on any dataset in the following format:
 The first line contains three numbers n, d, and r, where n is the number of points, d is the dimensionality of the instance space, and r is the radius.
